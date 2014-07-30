@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: iod-python
+Version: 0.1dev
+Summary: IDOL OnDemand python client library
+Home-page: http://idolondemand.com
+Author: Martin Zerbib
+Author-email: martinzerbib@gmail.com
+License: UNKNOWN
+Description: UNKNOWN
+Keywords: IDOL idolondemand iod
+Platform: UNKNOWN
