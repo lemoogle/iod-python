@@ -69,10 +69,10 @@ class IODClient:
 
 	def deleteIndex(self,name):
 		indexdata={"index":name}
-		r=self.post("deletetextindex",indexdata).text
+		r=self.post("deletetextindex",indexdata).json()
 		print "confirming"
-		indexdata["confirm"]=json.loads(r)["confirm"]
-		r=self.post("deletetextindex",indexdata).text
+		indexdata["confirm"]=r["confirm"]
+		r=self.post("deletetextindex",indexdata).json()
 
 	def listIndexes(self,type="",flavor="standard"):
 		result={}
