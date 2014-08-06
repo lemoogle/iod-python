@@ -82,10 +82,19 @@ class IODClient:
 			result[index["index"]]=self.parseIndex(index)
 		return result
 
-	def post(self,handler,data={},files={},async=False,**args):
+	def post(self,handler,data={},files={},async=False, **args):
 		data["apikey"]=self.apikey
+		syncstr="sync"
+		if async:
+			syncstr="async"
 
-		url = "%s/%s/api/sync/%s/v%s" % (self.root,self.version,handler,self.apiversiondefault)
+		url = "%s/%s/api/%s/%s/v%s" % (self.root,self.version,syncstr,handler,self.apiversiondefault)
+
+		return self.callAPI(url,data,files,async)
+
+
+
+	def callAPI(self,url,data={},files={},async=False):
 		response= requests.post(url,data=data, files=files, proxies=proxyDict)
 		if response.status_code == 429:
 			print "Throttled, Sleeping 2 seconds"
@@ -95,12 +104,45 @@ class IODClient:
 			return self.post(handler,data,files)
 		elif response.status_code != 200:
 			raise IODException(response.json(),response.status_code)
-		return response
+		if async:
+			return IODAsyncResponse(response,self)
+		return IODResponse(response,self)
+
+
+
 
 	def postasync(self,handler,data={},files={},**args):
 		data["apikey"]=self.apikey
 		url = "%s/%s/api/async/%s/v%s" % (self.root,self.version,handler,self.apiversiondefault)
 		return requests.post(url,data=data, proxies=proxyDict)
+
+	def getAsyncResult(self,jobid):
+		data={}
+		data["apikey"]=self.apikey
+		url = "%s/%s/%s/%s" % (self.root,self.version,"job/status",jobid)
+		return self.callAPI(url,data=data,async=False)
+
+
+class IODResponse(object):
+
+	def __init__(self,response,client):
+		self.response=response
+		self.client=client
+
+	def json(self):
+		return self.response.json()
+		
+
+
+class IODAsyncResponse(IODResponse):
+
+	def __init__(self,response,client):
+
+		super(IODAsyncResponse,self).__init__(response,client)
+		self.jobID=self.response.json()["jobID"]
+
+	def getResult(self):
+		return self.client.getAsyncResult(self.jobID)
 
 
 
@@ -122,7 +164,7 @@ class Index:
 	def commit(self, async=False):
 		docs={'documents':self.docs}
 		data={'json':json.dumps(docs),'index':self.name }		
-		r=self.client.post("addtotextindex",data=data,files={'fake':''})
+		r=self.client.post("addtotextindex",data=data,files={'fake':''},async=async)
 		self.docs=[]
 		return r
 
@@ -132,7 +174,7 @@ class Index:
 	def addDocs(self,docs):
 		docs={'document':docs}
 		data={'json':json.dumps(docs), 'index':self.name}
-		r=self.client.post("addtotextindex",data=data,files={'fake':''})
+		r=self.client.post("addtotextindex",data=data,files={'fake':''},)
 		return r
 
 	def delete(self):
