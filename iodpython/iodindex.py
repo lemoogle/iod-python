@@ -42,8 +42,8 @@ class IODClient:
 		self.proxy=proxy
 
 
-	def createIndex(self,name,flavor="standard"):
-		indexdata={"index":name,"flavor":flavor }
+	def createIndex(self,name,flavor="standard",index_fields="",parametric_fields=""):
+		indexdata={"index":name,"flavor":flavor,"index_fields":index_fields,"parametric_fields":parametric_fields}
 		r=self.post("createtextindex",indexdata)
 		print r.text
 		result=json.loads(r.text)
