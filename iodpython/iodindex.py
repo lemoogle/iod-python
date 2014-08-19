@@ -161,6 +161,9 @@ class Index:
 	def pushDoc(self, doc):
 		self.docs.append(doc)
 
+	def pushDocs(self,docs):
+		self.docs=self.docs+docs
+
 	def commit(self, async=False):
 		docs={'documents':self.docs}
 		data={'json':json.dumps(docs),'index':self.name }		
@@ -168,13 +171,13 @@ class Index:
 		self.docs=[]
 		return r
 
-	def addDoc(self,doc):
-		return self.addDocs([doc])
+	def addDoc(self,doc,async=False):
+		return self.addDocs([doc],async=async)
 
-	def addDocs(self,docs):
+	def addDocs(self,docs,async=False):
 		docs={'document':docs}
 		data={'json':json.dumps(docs), 'index':self.name}
-		r=self.client.post("addtotextindex",data=data,files={'fake':''},)
+		r=self.client.post("addtotextindex",data=data,files={'fake':''},async=async)
 		return r
 
 	def delete(self):

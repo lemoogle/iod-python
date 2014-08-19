@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.101'
+version = '0.102'
 
 setup(name='iod-python',
       version=version,
