@@ -45,8 +45,7 @@ class IODClient:
 	def createIndex(self,name,flavor="standard",index_fields="",parametric_fields=""):
 		indexdata={"index":name,"flavor":flavor,"index_fields":index_fields,"parametric_fields":parametric_fields}
 		r=self.post("createtextindex",indexdata)
-		print r.text
-		result=json.loads(r.text)
+		result=r.json()
 		print result
 		try:
 			return Index(self,result["index"])
