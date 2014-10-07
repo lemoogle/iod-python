@@ -3,9 +3,9 @@ import json
 import httplib
 import time
 
-proxyDict = { 
-#              "http"  : http_proxy, 
- #             "https" : https_proxy, 
+proxyDict = {
+#              "http"  : http_proxy,
+ #             "https" : https_proxy,
   #            "ftp"   : ftp_proxy
             }
 
@@ -31,7 +31,7 @@ class IODClient:
 	apiversiondefault = None
 	apikey= None
 	proxy= None
-	
+
 	def __init__(self,url,apikey,version=1,apiversiondefault=1,proxy={}):
 		if url.endswith("/"):
 			url=url[:len(url)-1]
@@ -64,7 +64,7 @@ class IODClient:
 		return False
 
 	def getIndex(self,name):
-		return Index(self,name)	
+		return Index(self,name)
 
 	def deleteIndex(self,name):
 		indexdata={"index":name}
@@ -102,7 +102,7 @@ class IODClient:
 			print "Resuming"
 			return self.post(handler,data,files)
 		elif response.status_code != 200:
-			raise IODException(response.json(),response.status_code)
+			raise IODException(response,response.status_code)
 		if async:
 			return IODAsyncResponse(response,self)
 		return IODResponse(response,self)
@@ -130,7 +130,7 @@ class IODResponse(object):
 
 	def json(self):
 		return self.response.json()
-		
+
 
 
 class IODAsyncResponse(IODResponse):
@@ -165,7 +165,7 @@ class Index:
 
 	def commit(self, async=False):
 		docs={'documents':self.docs}
-		data={'json':json.dumps(docs),'index':self.name }		
+		data={'json':json.dumps(docs),'index':self.name }
 		r=self.client.post("addtotextindex",data=data,files={'fake':''},async=async)
 		self.docs=[]
 		return r
@@ -181,6 +181,3 @@ class Index:
 
 	def delete(self):
 		self.client.deleteIndex(self.name)
-
-
-
