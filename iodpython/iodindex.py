@@ -95,6 +95,9 @@ class IODClient:
 
 	def callAPI(self,url,data={},files={},async=False):
 		response= requests.post(url,data=data, files=files, proxies=proxyDict)
+    print response
+    print "ERROR"
+
 		if response.status_code == 429:
 			print "Throttled, Sleeping 2 seconds"
 			print response.text
@@ -102,9 +105,7 @@ class IODClient:
 			print "Resuming"
 			return self.post(handler,data,files)
 		elif response.status_code != 200:
-      print response
-      print "ERROR"
-			raise IODException(response,response.status_code)
+      raise IODException(response,response.status_code)
 		if async:
 			return IODAsyncResponse(response,self)
 		return IODResponse(response,self)
