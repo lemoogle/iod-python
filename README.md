@@ -5,7 +5,7 @@ pip install git+https://github.com/lemoogle/iod-python
 ```
 
 
-### The iodindex module
+### Importing
 
 ```
 from iodpython.iodindex import IODClient
