@@ -91,7 +91,7 @@ indexex.get('myindex',client.createIndex('myindex'))
 
 Here we first check the list of our indexes and return a newly created index if the index does not already exist
 
-** Deleting an index **
+**Deleting an index**
 
 ```python
 index.delete()
@@ -99,7 +99,7 @@ client.deleteIndex('myindex')
 ```
 An index can be deleted in two equivalent ways
 
-** Indexing documents **
+**Indexing documents**
 
 ```python
 doc1={'reference':'doc1','title':'title1','content':'this is my content'}
