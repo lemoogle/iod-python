@@ -127,3 +127,16 @@ if index.countDocs()>10:
 ```
 
 It makes it easy to batch together groups of documents.
+
+
+
+### Asynchronous request
+
+For each call the Async parameter can be set to true to send an asynchronous request.
+
+```
+r=client.post('analyzesentiment',{'text':'I like cats'},async=True)
+print r.json()
+
+r=index.commit(async=True)
+```
