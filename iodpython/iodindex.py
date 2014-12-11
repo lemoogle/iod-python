@@ -4,22 +4,22 @@ import httplib
 import time
 
 proxyDict = {
-#              "http"  : http_proxy,
- #             "https" : https_proxy,
-  #            "ftp"   : ftp_proxy
-            }
+#				  "http"  : http_proxy,
+ #				 "https" : https_proxy,
+  #				"ftp"   : ftp_proxy
+				}
 
 
 
 class IODException(Exception):
     def __init__(self, rjson, code):
-        # Call the base class constructor with the parameters it needs
-        if "detail" in rjson:
-        	Exception.__init__(self, "Response code {} - Error {} - {} \n Details: {}".format(code,rjson["error"],rjson["reason"], rjson["detail"]))
-        else:
-        	Exception.__init__(self, "Response code {} - Error {} - {} ]n Details: {} ".format(code,rjson["error"],rjson["reason"],rjson))
+		  # Call the base class constructor with the parameters it needs
+		  if "detail" in rjson:
+		  	Exception.__init__(self, "Response code {} - Error {} - {} \n Details: {}".format(code,rjson["error"],rjson["reason"], rjson["detail"]))
+		  else:
+		  	Exception.__init__(self, "Response code {} - Error {} - {} ]n Details: {} ".format(code,rjson["error"],rjson["reason"],rjson))
 
-        # Now for your custom code...
+		  # Now for your custom code...
 
 
 class DocumentException(Exception):
@@ -105,7 +105,7 @@ class IODClient:
 			print "Resuming"
 			return self.post(handler,data,files)
 		elif response.status_code != 200:
-      raise IODException(response,response.status_code)
+		raise IODException(response,response.status_code)
 		if async:
 			return IODAsyncResponse(response,self)
 		return IODResponse(response,self)
