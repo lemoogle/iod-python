@@ -105,7 +105,7 @@ class IODClient:
 			print "Resuming"
 			return self.post(handler,data,files)
 		elif response.status_code != 200:
-		raise IODException(response,response.status_code)
+			raise IODException(response,response.status_code)
 		if async:
 			return IODAsyncResponse(response,self)
 		return IODResponse(response,self)
